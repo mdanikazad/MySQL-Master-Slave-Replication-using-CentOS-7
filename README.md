@@ -8,10 +8,14 @@ This type of replication topology is best suited for deploying of read replicas 
 Prerequisites
 In this example, we are assuming that you have two servers running CentOS 7, which can communicate with each other over a private network. If your hosting provider doesn’t provide private IP addresses, you can use the public IP addresses and configure your firewall to allow traffic on port 3306 only from trusted sources.
 The servers in this example have the following IPs:
+
 Master IP: 192.168.121.59
 Slave IP:  192.168.121.14
+
 Install MySQL
+
 The default The CentOS 7 repositories doesn’t include MySQL packages so we will install MySQL from their official Yum Repository. To avoid any issues, we will install the same MySQL version 5.7 on both servers.
+
 Install MySQL on both the Master and Slave servers:
 sudo yum localinstall https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpmsudo yum install mysql-community-server
 Once the installation is completed, start the MySQL service and enable it to automatically start on boot with:
@@ -27,6 +31,7 @@ First, we will configure the master MySQL server and make the following changes:
 •	Set the MySQL server to listen on the private IP .
 •	Set a unique server ID.
 •	Enable the binary logging.
+
 To do so open the MySQL configuration file and add the following lines in the [mysqld] section:
 sudo nano /etc/my.cnf
 master:/etc/my.cnf
@@ -56,6 +61,7 @@ Like for the master server above, we’ll make the following changes to the slav
 •	Set the MySQL server to listen on the private IP
 •	Set a unique server ID
 •	Enable the binary logging
+
 Open the MySQL configuration file and edit the following lines:
 sudo nano /etc/my.cnf
 slave:/etc/my.cnf
@@ -73,6 +79,7 @@ CHANGE MASTER TOMASTER_HOST='192.168.121.59',MASTER_USER='replica',MASTER_PASSWO
 Make sure you are using the correct IP address, user name, and password. The log file name and position must be the same as the values you obtained from the master server.
 Once done, start the slave threads.
 START SLAVE;
+
 Test the Configuration
 At this point, you should have a working Master/Slave replication setup.
 To verify that everything works as expected, we’ll create a new database on the master server:

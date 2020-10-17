@@ -12,11 +12,12 @@ The servers in this example have the following IPs:
 Master IP: 192.168.121.59
 Slave IP:  192.168.121.14
 
-Install MySQL
+#Install MySQL
 
 The default The CentOS 7 repositories doesn’t include MySQL packages so we will install MySQL from their official Yum Repository. To avoid any issues, we will install the same MySQL version 5.7 on both servers.
 
-Install MySQL on both the Master and Slave servers:
+#Install MySQL on both the Master and Slave servers:
+
 sudo yum localinstall https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpmsudo yum install mysql-community-server
 Once the installation is completed, start the MySQL service and enable it to automatically start on boot with:
 sudo systemctl enable mysqldsudo systemctl start mysqld
@@ -32,7 +33,8 @@ First, we will configure the master MySQL server and make the following changes:
 •	Set a unique server ID.
 •	Enable the binary logging.
 
-To do so open the MySQL configuration file and add the following lines in the [mysqld] section:
+#To do so open the MySQL configuration file and add the following lines in the [mysqld] section:
+
 sudo nano /etc/my.cnf
 master:/etc/my.cnf
 bind-address           = 192.168.121.59
@@ -62,7 +64,7 @@ Like for the master server above, we’ll make the following changes to the slav
 •	Set a unique server ID
 •	Enable the binary logging
 
-Open the MySQL configuration file and edit the following lines:
+#Open the MySQL configuration file and edit the following lines:
 sudo nano /etc/my.cnf
 slave:/etc/my.cnf
 bind-address           = 192.168.121.14
@@ -80,7 +82,8 @@ Make sure you are using the correct IP address, user name, and password. The log
 Once done, start the slave threads.
 START SLAVE;
 
-Test the Configuration
+#Test the Configuration
+
 At this point, you should have a working Master/Slave replication setup.
 To verify that everything works as expected, we’ll create a new database on the master server:
 mysql -uroot -p
